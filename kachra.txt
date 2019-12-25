@@ -1,0 +1,93 @@
+# keep = True
+    # while keep == True:
+    #
+    #     for event in pygame.event.get():
+    #         if event.type == pygame.MOUSEBUTTONDOWN:
+    #
+    #             next_x, next_y = get_indexes()
+    #             next_value = grid[next_x][next_y]
+    #             print("nexts ", next_x, next_y, next_value)
+    #             if next_value == self[0] or next_value == self[1]:
+    #                 x1, y1 = hide_image(x1, y1)
+    #                 x2, y2 = hide_image(x2, y2)
+    #                 x3, y3 = hide_image(x3, y3)
+    #                 x4, y4 = hide_image(x4, y4)
+    #                 pygame.display.update()
+    #
+    #
+    #
+    #                 when_self(grid, next_x, next_y, next_value, x1, y1, x2, y2, x3, y3, x4, y4, value1, value2, value3, value4)
+    #
+    #             elif next_value == 0:
+    #                 turn = True
+
+    # print(turn)
+
+    # elif turn == False and initial_value == other[0] or initial_value == other[1]:
+    #     hint_list = get_hints(grid, initial_x, initial_y, initial_value)
+    #     print("hint lists ", hint_list)
+    #
+    #     for i in range(len(hint_list)):
+    #         if i == 0:
+    #             x1, y1, value1 = hint_list[0]
+    #             if value1 == self[0]:
+    #                 x1 = None
+    #                 y1 = None
+    #             elif value1 == 0:
+    #                 x1 = None
+    #                 y1 = None
+    #             elif value1 == 3:
+    #                 pass
+    #
+    #         elif i == 1:
+    #             x2, y2, value2 = hint_list[1]
+    #             if value2 == self[0]:
+    #                 x2 = None
+    #                 y2 = None
+    #             elif value2 == 0:
+    #                 x2 = None
+    #                 y2 = None
+    #             elif value2 == 3:
+    #                 pass
+    #
+    #         elif i == 2:
+    #             x3, y3, value3 = hint_list[3]
+    #             if value3 == self[0]:
+    #                 x3 = None
+    #                 y3 = None
+    #             elif value3 == 0:
+    #                 x3 = None
+    #                 y3 = None
+    #             elif value3 == 3:
+    #                 pass
+    #
+    #         elif i == 3:
+    #             x4, y4, value4 = hint_list[4]
+    #             if value4 == self[0]:
+    #                 x4 = None
+    #                 y4 = None
+    #             elif value4 == 0:
+    #                 x4 = None
+    #                 y4 = None
+    #             elif value4 == 3:
+    #                 pass
+    #
+    #     print("hint1", x1, y1, value1)
+    #     print("hint2", x2, y2, value2)
+    #     print("hint3", x3, y3, value3)
+    #     print("hint4", x4, y4, value4)
+    #
+    #     keep = True
+    #     while keep == True:
+    #         hint_image(x1, y1)
+    #         hint_image(x2, y2)
+    #         hint_image(x3, y3)
+    #         hint_image(x4, y4)
+    #         pygame.display.update()
+    #         if initial_value == other[0] or initial_value == other[1]:
+    #             turn = False
+    #             keep = False
+    #
+    #         elif initial_value == 0:
+    #             turn = False
+    #
