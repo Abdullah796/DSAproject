@@ -1,5 +1,6 @@
 import pygame
-
+import time
+import random
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -25,8 +26,11 @@ pygame.init()
 WINDOW_SIZE = [600, 600]
 screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("checkers")
+
 background_image = pygame.image.load("img/board.png").convert()
 self_img = pygame.image.load("img/self.png").convert()
+you_image = pygame.image.load("img/you-win.png").convert()
+computer_image = pygame.image.load("img/computer-win.png").convert()
 self_king_img = pygame.image.load("img/self-king.png").convert()
 other_img = pygame.image.load("img/other.png").convert()
 other_king_img = pygame.image.load("img/other-king.png").convert()
@@ -145,7 +149,7 @@ def hide_image(x,y):
         screen.blit(hide_img, (q+5, p+5))
         pygame.display.update()
 
-def hide_image_if_self(grid,x,y):
+def hide_image_if_blank(grid,x,y):
     p, q = get_coordinates(x, y)
     if p==None and q==None:
         return
@@ -155,15 +159,6 @@ def hide_image_if_self(grid,x,y):
         screen.blit(hide_img, (q+5, p+5))
         pygame.display.update()
 
-def hide_image_if_other(grid,x,y):
-    p, q = get_coordinates(x, y)
-    if p==None and q==None:
-        return
-    elif grid[x][y] == self[0] or grid[x][y] == self[1] or grid[x][y] == other[0] or grid[x][y] == other[1]:
-        return
-    else:
-        screen.blit(hide_img, (q+5, p+5))
-        pygame.display.update()
 
 
 def get_hints(grid, x, y, value):
@@ -587,6 +582,26 @@ def isPriority_2(grid):
         return list1_indexes[i]
         break
 
+def is_win(grid, turn):
+    count_computer = 0
+    count_you = 0
+    for i in grid:
+        for j in i:
+            if j == self[0] or j == self[1]:
+                count_computer += 1
+            elif j == other[0] or j == other[1]:
+                count_you += 1
+    if count_computer==0:
+        screen.blit(you_image, [0, 0])
+        pygame.display.update()
+        while True:
+            print("you win")
+    elif count_you == 0:
+        screen.blit       (computer_image, [0, 0])
+        pygame.display.update()
+        while True:
+            print("computer win")
+
 
 hint_x1, hint_y1, hint_x2, hint_y2, hint_x3, hint_y3, hint_x4, hint_y4 = None, None, None, None, None, None, None, None
 hint_value1, hint_value2, hint_value3, hint_value4 = 0, 0, 0, 0
@@ -617,18 +632,27 @@ print(grid)
 
 while running == True:
 
+    is_win(grid, turn)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
         if turn == True:
 
+            time.sleep(1)
+
             x = isPriority_1(grid)
             y = isPriority_2(grid)
             if x != None:
                 initial_x, initial_y, initial_value = x
-            else:
+            elif y!= None:
                 initial_x, initial_y, initial_value = y
+            elif x == None and y==None:
+                screen.blit(you_image, [0, 0])
+                pygame.display.update()
+                while True:
+                    print("you win")
 
             print("initials",initial_x, initial_y, initial_value)
 
@@ -649,6 +673,9 @@ while running == True:
                             first_priority.append([hints[i],next_hints[i]])
                     elif hints[i][-1] == 3:
                         second_priority.append(hints[i])
+
+                random.shuffle(first_priority)
+                random.shuffle(second_priority)
 
                 print("first priority", first_priority)
                 print("Second priority", second_priority)
@@ -697,6 +724,9 @@ while running == True:
 
 
             elif initial_value == self[0]: #or initial_value == self[1]
+
+
+
                 print("self turn")
                 hint_value1, hint_value2, hint_value3, hint_value4 = 0, 0, 0, 0
                 hint_x1, hint_y1, hint_x2, hint_y2, hint_x3, hint_y3, hint_x4, hint_y4, hint_value1, hint_value2, hint_value3, hint_value4 = getSeparateHints(grid, initial_x, initial_y, initial_value, hint_x1, hint_y1, hint_x2, hint_y2, hint_x3, hint_y3, hint_x4, hint_y4, hint_value1, hint_value2, hint_value3, hint_value4)
@@ -708,6 +738,7 @@ while running == True:
                 print("next hint 2: ",next_hint_x2, next_hint_y2, next_hint_value2)
 
                 print(hint_value1, hint_value2, hint_value3, hint_value4)
+
 
                 # hint1 and hint2 are blank
                 if hint_value1 == 3 and hint_value2 == 3:
@@ -839,11 +870,11 @@ while running == True:
 
 
             print("self end")
-            hide_image_if_self(grid, hint_x1, hint_y1)
-            hide_image_if_self(grid, hint_x2, hint_y2)
-            hide_image_if_self(grid, hint_x3, hint_y3)
-            hide_image_if_self(grid, hint_x4, hint_y4)
-            clock.tick(5000)
+            # hide_image_if_blank(grid, hint_x1, hint_y1)
+            # hide_image_if_blank(grid, hint_x2, hint_y2)
+            # hide_image_if_blank(grid, hint_x3, hint_y3)
+            # hide_image_if_blank(grid, hint_x4, hint_y4)
+            clock.tick(30)
 
         elif turn == False:
 
@@ -1154,10 +1185,15 @@ while running == True:
 
                     print("other end")
 
-                hide_image_if_self(grid, hint_x1, hint_y1)
-                hide_image_if_self(grid, hint_x2, hint_y2)
-                hide_image_if_self(grid, hint_x3, hint_y3)
-                hide_image_if_self(grid, hint_x4, hint_y4)
+            hide_image_if_blank(grid, hint_x1, hint_y1)
+            hide_image_if_blank(grid, hint_x2, hint_y2)
+            hide_image_if_blank(grid, hint_x3, hint_y3)
+            hide_image_if_blank(grid, hint_x4, hint_y4)
+
+            hide_image_if_blank(grid, next_hint_x1, next_hint_y1)
+            hide_image_if_blank(grid, next_hint_x2, next_hint_y2)
+            hide_image_if_blank(grid, next_hint_x3, next_hint_y3)
+            hide_image_if_blank(grid, next_hint_x4, next_hint_y4)
 
 
 
@@ -1174,7 +1210,7 @@ while running == True:
     hint_value1, hint_value2, hint_value3, hint_value4 = 0, 0, 0, 0
     keep = True
 
-    clock.tick(5000)
+    clock.tick(30)
 
     pygame.display.flip()
 
